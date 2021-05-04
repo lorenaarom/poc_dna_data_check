@@ -88,9 +88,9 @@ class RedshiftDataSet(GEDataSet):
         host = 'dev-dp-data-analytics-data-warehouse.cxu5fxz68hh0.us-east-1.redshift.amazonaws.com'
         port = '5439'
         user = 'etl_user'
-        pwd = 'm6cHBgLq'
+        dw_pwd = os.environ['hd_pwd']
         try:
-            con = psycopg2.connect(dbname=dbname, host=host,port=port, user=user, password=pwd)
+            con = psycopg2.connect(dbname=dbname, host=host,port=port, user=user, password=dw_pwd)
             cur = con.cursor()
             cur.execute(f'SELECT * FROM {self.schema_name}.{self.table_name}')
             data_list = cur.fetchall()
