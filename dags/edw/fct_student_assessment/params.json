@@ -1,0 +1,120 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": false,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "destination": {
+      "type": "fct",
+      "schema": "edw",
+      "table": "fct_student_assessment",
+      "conn_id": "gm_digital_platform"
+    },
+    "requirement": [
+      {
+        "schema": "edw",
+        "table": "dim_district"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_user"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_classroom"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_school_year"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_grade"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_product"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_curriculum"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_question"
+      }
+    ],
+    "columns": {
+      "bk": [
+        "bk_fct_student_assessment"
+      ],
+      "audit": [
+        "assessment_created_at",
+        "assessment_updated_at",
+        "attempt_created_at",
+        "attempt_updated_at",
+        "dwh_created_at"
+      ],
+      "all": [
+        "bk_fct_student_assessment",
+        "id_assessment",
+        "id_attempt",
+        "id_template",
+        "id_platform",
+        "sk_date_assessment_start",
+        "sk_date_assessment_end",
+        "sk_date_assessment_assigned",
+        "sk_date_assessment_finished",
+        "sk_date_attempt_start",
+        "sk_date_attempt_closed",
+        "sk_dim_district",
+        "sk_dim_student",
+        "sk_dim_teacher",
+        "sk_dim_classroom",
+        "sk_dim_school_year",
+        "sk_dim_grade",
+        "sk_dim_product",
+        "sk_dim_curriculum",
+        "sk_dim_question",
+        "des_assessment_type",
+        "des_assessment_status",
+        "flg_assessment_auto_launch",
+        "flg_asessment_deleted",
+        "des_attempt_status",
+        "flg_attempt_latest",
+        "flg_attempt_deleted",
+        "flg_attempt_graded",
+        "flg_attempt_completed_on_paper",
+        "des_attempt_max_score",
+        "response_item_flg_attempted",
+        "response_item_type",
+        "response_item_score",
+        "response_item_score_core",
+        "response_item_max_score",
+        "response_item_max_score_core",
+        "response_item_time_spent",
+        "response_question_flg_attempted",
+        "response_question_des_question_type",
+        "response_question_score",
+        "response_question_score_core",
+        "response_question_max_score",
+        "response_question_max_score_core",
+        "assessment_created_at",
+        "assessment_updated_at",
+        "attempt_created_at",
+        "attempt_updated_at",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

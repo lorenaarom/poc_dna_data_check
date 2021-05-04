@@ -1,0 +1,22 @@
+SELECT att.id,
+    att.district_id,
+    att.school_id,
+    att.assessment_id,
+    att.assignee_id,
+    COALESCE(nullif(att.score, 'NaN'), 0) AS score,
+    att.max_score,
+    att.platform_id,
+    att.started_at,
+    att.closed_at,
+    att.deleted,
+    att.created_at,
+    att.updated_at,
+    att.deleted_at,
+    'data_pipeline' AS inserted_by,
+    NOW()::TIMESTAMP AS inserted_at,
+    att.status
+FROM attempts att
+    JOIN assessments ast on att.assessment_id = ast.id
+WHERE att.deleted = false
+    AND ast.deleted = false
+    AND ast.status = 'done'

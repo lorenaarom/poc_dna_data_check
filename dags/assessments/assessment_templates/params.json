@@ -1,0 +1,56 @@
+{
+  "type": "ingestion",
+  "args": {
+    "owner": "GreatMinds",
+    "depends_on_past": false,
+    "start_date": "2021-03-01",
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "00:01:00"
+  },
+  "params": {
+    "origin": {
+      "schema": "public",
+      "table": "assessment_templates",
+      "conn_id": "gm_assessments"
+    },
+    "destination": {
+      "schema": "assessments",
+      "table": "assessment_templates",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": [
+        "id"
+      ],
+      "audit": [
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ],
+      "all": [
+        "id",
+        "district_id",
+        "title",
+        "assignment_type",
+        "parent_id",
+        "external_id",
+        "grade",
+        "module",
+        "lesson",
+        "curriculum",
+        "platform_id",
+        "deleted",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "topic"
+      ]
+    }
+  }
+}

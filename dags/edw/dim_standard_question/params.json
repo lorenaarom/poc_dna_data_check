@@ -1,0 +1,71 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": false,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "requirement": [
+      {
+        "schema": "assessments",
+        "table": "item_standards"
+      },
+      {
+        "schema": "assessments",
+        "table": "assessment_templates_item"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_question"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_standard"
+      }
+    ],
+    "destination": {
+      "type": 2,
+      "schema": "edw",
+      "table": "dim_standard_question",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": "sk_dim_standard_question",
+      "bk": [
+        "bk_dim_standard_question"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at",
+        "dwh_date_start",
+        "dwh_date_end"
+      ],
+      "track": [
+        "sk_dim_standard",
+        "sk_dim_question",
+        "id_item_external",
+        "id_standard_set_global",
+        "des_standard_item_hierarchy_level",
+        "flg_deleted"
+      ],
+      "all": [
+        "sk_dim_standard",
+        "sk_dim_question",
+        "id_item_external",
+        "id_standard_set_global",
+        "des_standard_item_hierarchy_level",
+        "flg_deleted",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

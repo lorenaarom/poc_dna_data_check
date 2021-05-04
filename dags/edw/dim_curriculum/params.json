@@ -1,0 +1,54 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "requirement": [
+      {
+        "schema": "account_management",
+        "table": "curriculum"
+      }
+    ],
+    "destination": {
+      "type": 2,
+      "schema": "edw",
+      "table": "dim_curriculum",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": "sk_dim_curriculum",
+      "bk": [
+        "bk_dim_curriculum"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at",
+        "dwh_date_start",
+        "dwh_date_end"
+      ],
+      "track": [
+        "id_curriculum_global",
+        "des_curriculum",
+        "flg_last_version_id_curriculum_global"
+      ],
+      "all": [
+        "id_curriculum",
+        "id_curriculum_global",
+        "des_curriculum",
+        "flg_last_version_id_curriculum_global",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

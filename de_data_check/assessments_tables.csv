@@ -1,0 +1,15 @@
+schema_name,table_name
+assessments,assessment_responses_item_category
+assessments,assessment_responses_item_criterion
+assessments,assessment_templates
+assessments,assessment_templates_item
+assessments,assessment_templates_item_question
+assessments,assessment_templates_item_standard
+assessments,assessments
+assessments,attempts
+assessments,attempts_response
+assessments,attempts_response_question
+assessments,item_standards
+assessments,questions_rubric
+assessments,questions_rubric_responses
+

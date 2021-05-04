@@ -1,0 +1,53 @@
+{
+  "type": "ingestion",
+  "args": {
+    "owner": "aparra",
+    "depends_on_past": false,
+    "start_date": "2021-03-02",
+    "email": [
+      "andres.parra@greatminds.org"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "01:00:00"
+  },
+  "params": {
+    "origin": {
+      "conn_id": "gm_assessments"
+    },
+    "destination": {
+      "schema": "assessments",
+      "table": "assessment_responses_item_criterion",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": [
+        "attempt_id",
+        "item_order",
+        "criterion_key"
+      ],
+      "audit": [
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ],
+      "all": [
+        "row_number",
+        "assessment_template_id",
+        "assessment_id",
+        "district_id",
+        "attempt_id",
+        "item_order",
+        "question_id",
+        "criterion_key",
+        "criterion_value",
+        "deleted",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ]
+    }
+  }
+}

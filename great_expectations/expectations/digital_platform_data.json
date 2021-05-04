@@ -1,0 +1,23 @@
+{
+  "data_asset_type": "Dataset",
+  "expectation_suite_name": "digital_platform_data",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_values_to_be_unique",
+      "kwargs": {
+        "column": "row_number"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "row_number"
+      },
+      "meta": {}
+    }
+  ],
+  "meta": {
+    "great_expectations_version": "0.12.7"
+  }
+}

@@ -1,0 +1,23 @@
+select row_number() over ()::int as row_number,
+    atm.district_id,
+    atm.id as assessment_template_id,
+    item.ordinality::int as item_order,
+    (item.value->>'maxScore')::numeric(4, 2) as max_score,
+    (item.value->>'externalId')::varchar(100) as external_id,
+    (item.value->>'scoringType')::varchar(30) as scoring_type,
+    (item.value->>'ratingRubricVariation')::varchar(30) as rating_rubric_variation,
+    (item.value->>'type')::varchar(30) as item_type,
+    item.value->>'title' as item_title,
+    item.value->>'description' as description,
+    (item.value->>'manualScoring')::boolean as manual_scoring,
+    item.value->>'standards' as standards,
+    item.value->>'childStandards' as child_standards,
+    (item.value->>'externalBankItemId')::varchar(100) as external_bank_item_id,
+    atm.created_at,
+    atm.updated_at,
+    atm.deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+from assessment_templates atm,
+    lateral jsonb_array_elements(atm.items) with ordinality as item(value)
+where atm.deleted = false

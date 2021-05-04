@@ -1,0 +1,58 @@
+{
+  "type": "ingestion",
+  "schedule_interval": "* * * * *",
+  "args": {
+    "owner": "GreatMinds",
+    "depends_on_past": false,
+    "start_date": "2021-03-01",
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "00:01:00"
+  },
+  "params": {
+    "origin": {
+      "conn_id": "gm_assessments"
+    },
+    "destination": {
+      "schema": "assessments",
+      "table": "attempts",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": [
+        "id",
+        "district_id"
+      ],
+      "audit": [
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ],
+      "all": [
+        "id",
+        "district_id",
+        "school_id",
+        "assessment_id",
+        "assignee_id",
+        "score",
+        "max_score",
+        "platform_id",
+        "started_at",
+        "closed_at",
+        "deleted",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "status",
+        "latest",
+        "graded",
+        "completed_on_paper"
+      ]
+    }
+  }
+}

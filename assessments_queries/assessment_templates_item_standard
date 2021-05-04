@@ -1,0 +1,18 @@
+SELECT row_number() over ()::int as row_number,
+    atm.district_id,
+    atm.id as assessment_template_id,
+    item.ordinality item_order,
+    unnest(
+        string_to_array(
+            translate(item.value->>'standards', '[]\" ', ''),
+            ','
+        )
+    ) as standard,
+    atm.created_at,
+    atm.updated_at,
+    atm.deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+FROM assessment_templates atm,
+    LATERAL jsonb_array_elements(atm.items) with ordinality as item(value)
+WHERE atm.deleted = false

@@ -1,0 +1,140 @@
+select distinct row_number() over ()::int as row_number,
+    assessment_template_id,
+    assessment_id,
+    district_id,
+    attempt_id,
+    item_order,
+    question_id,
+    (qr.value->>'key')::int as criterion_key,
+    (qr.value->>'value')::int as criterion_value,
+    created_at,
+    updated_at,
+    deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+from (
+        select distinct row_number() over ()::int as row_number,
+            atm.id as assessment_template_id,
+            atm.title,
+            ast.id as assessment_id,
+            ast.district_id,
+            att.id as attempt_id,
+            att.assignee_id as assignee_id,
+            ati.external_id as item_external_id,
+            ati.item_order as item_order,
+            ati.scoring_type as item_score_type,
+            ati.rating_rubric_variation as item_variation,
+            (
+                select count(*)
+                from jsonb_array_elements(qr.responses) question_responses(value)
+                where (question_responses.value->>'value')::int = 0
+            ) as response_score,
+            ar.max_score as response_max_score,
+            qr.id as question_id,
+            case
+                when ati.scoring_type = 'rating' then (jsonb_array_element(qr.responses, 0)->>'value')::int
+            end as category_1,
+            case
+                when ati.scoring_type = 'rating' then (jsonb_array_element(qr.responses, 1)->>'value')::int
+            end as category_2,
+            case
+                when ati.scoring_type = 'rating' then (jsonb_array_element(qr.responses, 2)->>'value')::int
+            end as category_3,
+            case
+                when ati.scoring_type = 'rating' then (jsonb_array_element(qr.responses, 3)->>'value')::int
+            end as category_4,
+            case
+                when ati.scoring_type = 'rating' then (jsonb_array_element(qr.responses, 4)->>'value')::int
+            end as category_5,
+            case
+                when ati.scoring_type = 'rating' then (jsonb_array_element(qr.responses, 5)->>'value')::int
+            end as category_6,
+            qr.responses as question_responses,
+            atm.created_at,
+            atm.updated_at,
+            atm.deleted_at,
+            'data_pipeline' as inserted_by,
+            NOW()::TIMESTAMP as inserted_at
+        from assessment_templates atm
+            join assessments ast on atm.id = ast.assessment_template_id
+            join (
+                select row_number() over ()::int as row_number,
+                    atm.district_id,
+                    atm.id as assessment_template_id,
+                    item.ordinality::int as item_order,
+                    (item.value->>'maxScore')::numeric(4, 2) as max_score,
+                    (item.value->>'externalId')::varchar(100) as external_id,
+                    (item.value->>'scoringType')::varchar(30) as scoring_type,
+                    (item.value->>'ratingRubricVariation')::varchar(30) as rating_rubric_variation,
+                    (item.value->>'type')::varchar(30) as item_type,
+                    item.value->>'title' as item_title,
+                    item.value->>'description' as description,
+                    (item.value->>'manualScoring')::boolean as manual_scoring,
+                    item.value->>'standards' as standards,
+                    item.value->>'childStandards' as child_standards,
+                    (item.value->>'externalBankItemId')::varchar(100) as external_bank_item_id,
+                    'data_pipeline' as inserted_by,
+                    NOW()::TIMESTAMP as inserted_at
+                from assessment_templates atm,
+                    lateral jsonb_array_elements(atm.items) with ordinality as item(value)
+                where atm.deleted = false
+            ) ati on atm.id = ati.assessment_template_id
+            join attempts att on ast.id = att.assessment_id
+            join (
+                select row_number() over ()::int as row_number,
+                    att.district_id,
+                    id as attempt_id,
+                    att.school_id,
+                    att.assessment_id,
+                    att.assignee_id,
+                    response.ordinality::int as response_order,
+                    (response.value->>'score')::numeric(4, 2) as score,
+                    (response.value->>'maxScore')::numeric(4, 2) as max_score,
+                    (response.value->>'attempted')::boolean as attempted,
+                    (response.value->>'externalItemId')::varchar(100) as external_item_id,
+                    (response.value->>'type')::varchar(20) as type,
+                    (response.value->>'timeSpent')::numeric(4, 2) as time_spent,
+                    'data_pipeline' as inserted_by,
+                    NOW()::TIMESTAMP as inserted_at
+                from attempts att,
+                    lateral jsonb_array_elements(att.responses) with ordinality response(value)
+                where att.deleted = false
+            ) ar on att.id = ar.attempt_id
+            and ati.external_id = ar.external_item_id
+            join (
+                select distinct on (qr.attempt_id, qr.external_item_id) qr.id,
+                    att.district_id,
+                    qr.attempt_id,
+                    qr.external_item_id,
+                    qr.external_question_id,
+                    qr.responses,
+                    qr.deleted,
+                    qr.created_at,
+                    qr.updated_at,
+                    qr.deleted_at,
+                    'data_pipeline' as inserted_by,
+                    NOW()::TIMESTAMP as inserted_at
+                from questions_rubric qr
+                    join attempts att on qr.attempt_id = att.id
+                where qr.deleted = false
+                order by attempt_id,
+                    external_item_id,
+                    updated_at desc
+            ) qr on att.id = qr.attempt_id
+            and ati.external_id = qr.external_item_id
+        where atm.deleted = false
+            and ast.status = 'done'
+            and ast.deleted = false
+            and att.deleted = false
+        order by assessment_template_id,
+            assessment_id,
+            attempt_id,
+            item_order
+    ) assessment_responses_item_category,
+    lateral jsonb_array_elements(question_responses) with ordinality qr(value)
+where item_score_type = 'matrix'
+order by assessment_template_id,
+    assessment_id,
+    attempt_id,
+    item_order,
+    criterion_key

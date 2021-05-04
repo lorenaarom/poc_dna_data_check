@@ -1,0 +1,107 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": false,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "destination": {
+      "type": 2,
+      "schema": "edw",
+      "table": "dim_classroom",
+      "conn_id": "gm_digital_platform"
+    },
+    "requirement": [
+      {
+        "schema": "account_management",
+        "table": "school"
+      },
+      {
+        "schema": "account_management",
+        "table": "classroom"
+      },
+      {
+        "schema": "account_management",
+        "table": "grade"
+      },
+      {
+        "schema": "account_management",
+        "table": "teacher"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_school_year"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_user"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_district"
+      }
+    ],
+    "columns": {
+      "id": "sk_dim_classroom",
+      "bk": [
+        "bk_dim_classroom"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at",
+        "dwh_date_start",
+        "dwh_date_end"
+      ],
+      "track": [
+        "sk_school_year_enrollment",
+        "sk_dim_teacher_primary",
+        "sk_dim_district",
+        "id_school",
+        "id_school_external",
+        "id_school_global",
+        "des_school",
+        "des_school_zip_code",
+        "id_grade",
+        "id_grade_global",
+        "des_grade",
+        "des_grade_external",
+        "id_classroom",
+        "id_classroom_external",
+        "id_classroom_global",
+        "des_classroom",
+        "des_classroom_external_subject",
+        "flg_last_version_id_classroom_global"
+      ],
+      "all": [
+        "sk_school_year_enrollment",
+        "sk_dim_teacher_primary",
+        "sk_dim_district",
+        "id_school",
+        "id_school_external",
+        "id_school_global",
+        "des_school",
+        "des_school_zip_code",
+        "id_grade",
+        "id_grade_global",
+        "des_grade",
+        "des_grade_external",
+        "id_classroom",
+        "id_classroom_external",
+        "id_classroom_global",
+        "des_classroom",
+        "des_classroom_external_subject",
+        "flg_last_version_id_classroom_global",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

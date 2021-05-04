@@ -1,0 +1,54 @@
+{
+  "type": "ingestion",
+  "schedule_interval": "* * * * *",
+  "args": {
+    "owner": "GreatMinds",
+    "depends_on_past": false,
+    "start_date": "2021-04-09",
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "00:01:00"
+  },
+  "params": {
+    "origin": {
+      "conn_id": "gm_assessments"
+    },
+    "destination": {
+      "schema": "assessments",
+      "table": "item_standards",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": [
+        "id",
+        "external_item_id"
+      ],
+      "audit": [
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ],
+      "all": [
+        "id",
+        "external_item_id",
+        "standard_global_ids",
+        "standard_global_id",
+        "standard_global_id_order",
+        "standard_set_global_id",
+        "hierarchy_level",
+        "deleted",
+        "created_by",
+        "updated_by",
+        "deleted_by",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+      ]
+    }
+  }
+}

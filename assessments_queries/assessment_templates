@@ -1,0 +1,19 @@
+select id,
+    district_id,
+    title,
+    assignment_type,
+    parent_id,
+    external_id,
+    grade,
+    module,
+    lesson,
+    curriculum,
+    platform_id,
+    deleted,
+    created_at,
+    updated_at,
+    deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+from assessment_templates atm
+where atm.deleted = false

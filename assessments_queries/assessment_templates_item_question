@@ -1,0 +1,19 @@
+select row_number() over ()::int as row_number,
+    atm.district_id,
+    atm.id as assessment_template_id,
+    item.ordinality::int as item_order,
+    (item.value->>'externalId')::varchar(100) as item_external_id,
+    question.ordinality::int as question_order,
+    (question.value->>'externalId')::varchar(100) as question_external_id,
+    (question.value->>'type')::varchar(30) as question_type,
+    (question.value->>'rubricReference')::varchar(100) as question_rubric_reference,
+    (question.value->>'maxScore')::numeric(4, 2) as question_max_score,
+    atm.created_at,
+    atm.updated_at,
+    atm.deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+from assessment_templates atm,
+    lateral jsonb_array_elements(atm.items) with ordinality as item(value),
+    lateral jsonb_array_elements(item.value->'questions') with ordinality as question(value)
+where atm.deleted = false

@@ -1,0 +1,20 @@
+select id,
+    district_id,
+    assessment_template_id,
+    type,
+    context_id,
+    owner_id,
+    school_id,
+    status,
+    platform_id,
+    start_date,
+    end_date,
+    deleted,
+    created_at,
+    updated_at,
+    deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+from assessments ast
+where ast.status = 'done'
+    and ast.deleted = false

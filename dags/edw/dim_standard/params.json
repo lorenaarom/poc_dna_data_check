@@ -1,0 +1,78 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "requirement": [
+      {
+        "schema": "standards",
+        "table": "standard_sets"
+      },
+      {
+        "schema": "standards",
+        "table": "standard_items"
+      }
+    ],
+    "destination": {
+      "type": 2,
+      "schema": "edw",
+      "table": "dim_standard",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": "sk_dim_standard",
+      "bk": [
+        "bk_dim_standard"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at",
+        "dwh_date_start",
+        "dwh_date_end"
+      ],
+      "track": [
+        "id_standard_set_global",
+        "id_standard_set_provider",
+        "des_standard_set",
+        "des_standard_set_subject",
+        "id_standard_item",
+        "id_standard_item_global",
+        "id_standard_item_global_parent",
+        "id_standard_item_hierarchy_level_order",
+        "des_standard_item_hierarchy_level",
+        "des_standard_item_code",
+        "des_standard_item_short_code",
+        "des_standard_item",
+        "flg_last_version_id_standard_item_global"
+      ],
+      "all": [
+        "id_standard_set",
+        "id_standard_set_global",
+        "id_standard_set_provider",
+        "des_standard_set",
+        "des_standard_set_subject",
+        "id_standard_item",
+        "id_standard_item_global",
+        "id_standard_item_global_parent",
+        "id_standard_item_hierarchy_level_order",
+        "des_standard_item_hierarchy_level",
+        "des_standard_item_code",
+        "des_standard_item_short_code",
+        "des_standard_item",
+        "flg_last_version_id_standard_item_global",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

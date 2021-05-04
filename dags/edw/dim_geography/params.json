@@ -1,0 +1,43 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "destination": {
+      "type": 1,
+      "schema": "edw",
+      "table": "dim_geography",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": "sk_dim_geography",
+      "bk": [
+        "bk_dim_geography"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at"
+      ],
+      "all": [
+        "id_country",
+        "des_country",
+        "id_state",
+        "des_state",
+        "id_city",
+        "des_city",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

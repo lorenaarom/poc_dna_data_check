@@ -1,0 +1,16 @@
+schema_name,table_name
+edw,dim_curriculum
+edw,dim_district
+edw,dim_geography
+edw,dim_grade
+edw,dim_product
+edw,dim_question
+edw,dim_rating_variation
+edw,dim_school_year
+edw,dim_standard
+edw,dim_standard_question
+edw,dim_time
+edw,dim_user
+edw,fct_question_rubric
+edw,fct_student_assessment
+edw,par_geography

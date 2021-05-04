@@ -1,0 +1,39 @@
+{
+  "type": "ingestion",
+  "args": {
+    "owner": "GreatMinds",
+    "depends_on_past": false,
+    "start_date": "2021-03-01",
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": false,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "01:00:00"
+  },
+  "params": {
+    "origin": {
+      "schema": "public",
+      "table": "class_content",
+      "conn_id": "gm_roster"
+    },
+    "destination": {
+      "schema": "account_management",
+      "table": "class_content",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": [
+        "id"
+      ],
+      "all": [
+        "id",
+        "classroom_id",
+        "course_id",
+        "product_id"
+      ]
+    }
+  }
+}

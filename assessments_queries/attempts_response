@@ -1,0 +1,21 @@
+select row_number() over ()::int as row_number,
+    att.district_id,
+    id as attempt_id,
+    att.school_id,
+    att.assessment_id,
+    att.assignee_id,
+    response.ordinality::int as response_order,
+    (response.value->>'score')::numeric(4, 2) as score,
+    (response.value->>'maxScore')::numeric(4, 2) as max_score,
+    (response.value->>'attempted')::boolean as attempted,
+    (response.value->>'externalItemId')::varchar(100) as external_item_id,
+    (response.value->>'type')::varchar(20) as type,
+    (response.value->>'timeSpent')::numeric(10, 2) as time_spent,
+    att.created_at,
+    att.updated_at,
+    att.deleted_at,
+    'data_pipeline' as inserted_by,
+    NOW()::TIMESTAMP as inserted_at
+from attempts att,
+    lateral jsonb_array_elements(att.responses) with ordinality response(value)
+where att.deleted = false

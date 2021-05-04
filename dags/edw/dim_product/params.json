@@ -1,0 +1,54 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "requirement": [
+      {
+        "schema": "account_management",
+        "table": "product"
+      }
+    ],
+    "destination": {
+      "type": 2,
+      "schema": "edw",
+      "table": "dim_product",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": "sk_dim_product",
+      "bk": [
+        "bk_dim_product"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at",
+        "dwh_date_start",
+        "dwh_date_end"
+      ],
+      "track": [
+        "id_product_global",
+        "des_product",
+        "flg_last_version_id_product_global"
+      ],
+      "all": [
+        "id_product",
+        "id_product_global",
+        "des_product",
+        "flg_last_version_id_product_global",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}

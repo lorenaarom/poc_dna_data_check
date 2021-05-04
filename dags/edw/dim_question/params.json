@@ -1,0 +1,116 @@
+{
+  "type": "transform",
+  "args": {
+    "owner": "Greatminds",
+    "depends_on_past": false,
+    "email": [
+      "airflow@airflow.com"
+    ],
+    "email_on_failure": true,
+    "email_on_retry": false,
+    "retries": 1,
+    "retry_delay": "00:01:00",
+    "interval": "1 DAYS 00:00:00"
+  },
+  "params": {
+    "requirement": [
+      {
+        "schema": "assessments",
+        "table": "assessment_templates"
+      },
+      {
+        "schema": "assessments",
+        "table": "assessment_templates_item"
+      },
+      {
+        "schema": "assessments",
+        "table": "assessment_templates_item_question"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_district"
+      },
+      {
+        "schema": "edw",
+        "table": "dim_curriculum"
+      }
+    ],
+    "destination": {
+      "type": 2,
+      "schema": "edw",
+      "table": "dim_question",
+      "conn_id": "gm_digital_platform"
+    },
+    "columns": {
+      "id": "sk_dim_question",
+      "bk": [
+        "bk_dim_question"
+      ],
+      "audit": [
+        "dwh_created_at",
+        "dwh_updated_at",
+        "dwh_date_start",
+        "dwh_date_end"
+      ],
+      "track": [
+        "sk_dim_district",
+        "sk_dim_curriculum",
+        "id_template_parent_id",
+        "des_template",
+        "flg_template_deleted",
+        "id_item_order",
+        "id_item_order_type",
+        "des_item_type",
+        "des_item_scoring_type",
+        "des_item_title",
+        "des_item_description",
+        "des_item_max_score",
+        "des_item_max_score_core",
+        "des_item_rating_rubric_variation",
+        "flg_item_manual_scoring",
+        "id_question_order",
+        "id_question_external",
+        "des_question_type",
+        "des_question_rubric_reference",
+        "des_question_max_score",
+        "des_question_max_score_core",
+        "flg_template_deleted"
+      ],
+      "all": [
+        "sk_dim_district",
+        "sk_dim_curriculum",
+        "id_template",
+        "id_template_parent_id",
+        "id_template_external",
+        "des_template",
+        "des_template_assignment_type",
+        "des_template_grade",
+        "des_template_module",
+        "des_template_lesson",
+        "des_template_curriculum",
+        "des_template_topic",
+        "id_item_external",
+        "id_item_external_bank",
+        "id_item_order",
+        "id_item_order_type",
+        "des_item_type",
+        "des_item_scoring_type",
+        "des_item_title",
+        "des_item_description",
+        "des_item_max_score",
+        "des_item_max_score_core",
+        "des_item_rating_rubric_variation",
+        "flg_item_manual_scoring",
+        "id_question_order",
+        "id_question_external",
+        "des_question_type",
+        "des_question_rubric_reference",
+        "des_question_max_score",
+        "des_question_max_score_core",
+        "flg_template_deleted",
+        "dwh_source_system_cd",
+        "dwh_source_data_cd"
+      ]
+    }
+  }
+}
